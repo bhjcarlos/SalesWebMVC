@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System;
 using System.Threading.Tasks;
+using SalesWebMVC.Services.Exceptions;
 
 namespace SalesWebMVC.Controllers
 {
@@ -66,8 +67,16 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _sellerService.RemoveAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+
+            catch (IntegrityException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -133,7 +142,7 @@ namespace SalesWebMVC.Controllers
             }
         }
 
-        public IActionResult Error(string message)
+        public IActionResult Error(string message) // função de erro não precisa ser async pq não tem acesso a dados
         {
             var viewModel = new ErrorViewModel
             {

@@ -4,7 +4,7 @@ using SalesWebMVC.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace SalesWebMVC.Services
+namespace SalesWebMVC.Services //usando async para operações mais lenta ex: acesso a bando de dados
 {
     public class DepartmentService
     {
